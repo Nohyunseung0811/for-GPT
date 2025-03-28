@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: Samsung Display News Analyzer
+  description: NewsAPI를 통해 삼성 디스플레이 관련 뉴스를 수집하고 분석합니다.
+  version: 1.0.0
+servers:
+  - url: https://newsapi.org/v2
+    description: NewsAPI 메인 서버
+paths:
+  /everything:
+    get:
+      operationId: fetchSamsungDisplayNews
+      summary: 삼성 디스플레이 관련 뉴스 수집
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: 검색어 (예: Samsung Display, 이리듐 등)
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: false
+          description: 시작 날짜 (예: 2024-01-01)
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: false
+          description: 종료 날짜 (예: 2025-03-29)
+          schema:
+            type: string
+            format: date
+        - name: sortBy
+          in: query
+          required: false
+          description: 정렬 방식 (relevancy, popularity, publishedAt)
+          schema:
+            type: string
+        - name: apiKey
+          in: query
+          required: true
+          description: NewsAPI 발급 키
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 뉴스 기사 목록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  totalResults:
+                    type: integer
+                  articles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        source:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                        author:
+                          type: string
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        url:
+                          type: string
+                        publishedAt:
+                          type: string
+                          format: date-time
